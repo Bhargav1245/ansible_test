@@ -1,0 +1,34 @@
+- name: Create new inventory
+  hosts: localhost
+  gather_facts: no
+  vars:
+    tower_host: "https://your-tower-host.com"
+    inventory_name: "New Inventory"
+    inventory_description: "This is a new inventory"
+    inventory_organization: "Default"
+    inventory_credential: "My Credential"
+  tasks:
+    - name: Get organization ID
+      uri:
+        url: "{{ tower_host }}/api/v2/organizations/?name={{ inventory_organization }}"
+        method: GET
+        tower_credential: "{{ inventory_credential }}"
+        validate_certs: no
+      register: org_response
+
+    - name: Create new inventory
+      uri:
+        url: "{{ tower_host }}/api/v2/inventories/"
+        method: POST
+        tower_credential: "{{ inventory_credential }}"
+        validate_certs: no
+        body_format: json
+        body:
+          name: "{{ inventory_name }}"
+          description: "{{ inventory_description }}"
+          organization: "{{ org_response.json.results[0].id }}"
+      register: inventory_response
+
+    - name: Print inventory ID
+      debug:
+        var: inventory_response.json.id
