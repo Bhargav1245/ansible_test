@@ -2,11 +2,11 @@
   hosts: localhost
   gather_facts: no
   vars:
-    tower_host: "https://your-tower-host.com"
-    inventory_name: "New Inventory"
-    inventory_description: "This is a new inventory"
-    inventory_organization: "Default"
-    inventory_credential: "My Credential"
+    tower_host:
+    inventory_name:
+    inventory_description:
+    inventory_organization:
+    inventory_credential:
   tasks:
     - name: Get organization ID
       uri:
