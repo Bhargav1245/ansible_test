@@ -12,7 +12,9 @@
       uri:
         url: "{{ tower_host }}/api/v2/organizations/?name={{ inventory_organization }}"
         method: GET
-        tower_credential: "{{ inventory_credential }}"
+        user: bhargav
+        password: bhar@123
+        force_basic_auth: true
         validate_certs: no
       register: org_response
 
@@ -20,7 +22,8 @@
       uri:
         url: "{{ tower_host }}/api/v2/inventories/"
         method: POST
-        tower_credential: "{{ inventory_credential }}"
+        user: bhargav
+        password: bhar@123
         validate_certs: no
         body_format: json
         body:
