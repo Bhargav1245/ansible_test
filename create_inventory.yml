@@ -6,7 +6,10 @@
     inventory_name:
     inventory_description:
     inventory_organization:
-    inventory_credential:
+    jumphost_group_name:
+    group_variables_jh:
+    vms_group_name:
+    group_variables_vm:
   tasks:
     - name: Get organization ID
       uri:
@@ -41,3 +44,52 @@
     - name: Print inventory ID
       debug:
         var: inventory_response.json.id
+
+
+    - name: Create jumphost group in the same inventory
+      uri:
+        url: "{{ tower_host }}/api/v2/groups/"
+        method: POST
+        user: bhargav
+        password: bhar@123
+        force_basic_auth: true
+        validate_certs: no
+        body_format: json
+        body:
+          name: "{{ jumphost_group_name }}"
+          inventory: "{{ inventory_response.json.id }}"
+          variables: "{{ group_variables_jh }}"
+        status_code:
+          - 200
+          - 201
+          - 202
+          - 204
+      register: jumphost_group_response
+
+    - name: Create 'vms' group in the same inventory
+      uri:
+        url: "{{ tower_host }}/api/v2/groups/"
+        method: POST
+        user: bhargav
+        password: bhar@123
+        force_basic_auth: true
+        validate_certs: no
+        body_format: json
+        body:
+          name: "{{ vms_group_name }}"
+          inventory: "{{ inventory_response.json.id }}"
+          variables: "{{ group_variables_vm }}"
+        status_code:
+          - 200
+          - 201
+          - 202
+          - 204
+      register: vms_group_response
+
+    - name: Print 'jumphost' group ID
+      debug:
+        var: jumphost_group_response.json.id
+
+    - name: Print 'vms' group ID
+      debug:
+        var: vms_group_response.json.id
