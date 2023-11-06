@@ -24,6 +24,7 @@
         method: POST
         user: bhargav
         password: bhar@123
+        force_basic_auth: true
         validate_certs: no
         body_format: json
         body:
