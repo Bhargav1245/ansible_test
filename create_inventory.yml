@@ -31,6 +31,11 @@
           name: "{{ inventory_name }}"
           description: "{{ inventory_description }}"
           organization: "{{ org_response.json.results[0].id }}"
+        status_code:
+         - 200
+         - 201
+         - 202
+         - 204
       register: inventory_response
 
     - name: Print inventory ID
